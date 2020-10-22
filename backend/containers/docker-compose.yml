@@ -1,0 +1,60 @@
+# docker-composeバージョンの宣言
+# https://docs.docker.com/compose/compose-file/
+version: '3.7'
+x-logging:
+  &default-logging
+  options:
+    max-size: '12m'
+    max-file: '5'
+  driver: json-file
+
+services:
+  postgres_django:
+    build:
+      context: .
+      dockerfile: postgresql/Dockerfile
+      args:
+        - DB_LANG=ja_JP
+    container_name: postgres_django
+    env_file: ./postgresql/.env_db
+    volumes:
+      - django_postgres_data:/var/lib/postgresql/data
+      # down -vなどでボリュームがない時などを含めた初回起動時に実行されるファイルを指定
+      - ./postgresql/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "5432"
+    logging: *default-logging
+
+  web_django:
+    build: django
+    container_name: web_django
+#    environment:
+    # --max-requests 1は開発中にファイルを変更しても反映されないのでさせるために付与。
+    # 付けない場合はファイル更新を通知するために下記をする必要がある
+    # docker exec -it django_web pgrep gunicorn
+    # docker exec -it django_web kill -HUP [↑で確認した番号]
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./django:/usr/src/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      # 環境変数に設定するファイル
+      - ./django/.env
+    depends_on:
+      - "postgres_django"
+    logging: *default-logging
+
+#  django_redis:
+#    restart: always
+#    image: redis:alpine
+#    container_name: "django_redis"
+#    ports:
+#      - "6379"
+#    logging: *default-logging
+
+volumes:
+  htpasswd:
+  vhost:
+  html:
+  django_postgres_data:
