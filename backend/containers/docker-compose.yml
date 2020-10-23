@@ -9,52 +9,105 @@ x-logging:
   driver: json-file
 
 services:
-  postgres_django:
+  web:
+    #    restart: always
+    build:
+      context: .
+      dockerfile: ./django/Dockerfile
+    container_name: web
+    environment:
+      VIRTUAL_HOST: web.test
+      VIRTUAL_PORT: 80
+    # --max-requests 1は開発中にファイルを変更しても反映されないのでさせるために付与。
+    # 付けない場合はファイル更新を通知するために下記をする必要がある
+    # docker exec -it django_web pgrep gunicorn
+    # docker exec -it django_web kill -HUP [↑で確認した番号]
+    command: bash -c "sleep 5; gunicorn config.wsgi --workers 2 --bind 0.0.0.0:8000 --max-requests 1"
+    volumes:
+      - ./django:/usr/src/app
+    depends_on:
+      - "postgres_django"
+    env_file: ./django/.env
+    ports:
+      - "8000"
+    logging: *default-logging
+
+  db:
+#    restart: always
     build:
       context: .
       dockerfile: postgresql/Dockerfile
       args:
         - DB_LANG=ja_JP
-    container_name: postgres_django
+    container_name: db
     env_file: ./postgresql/.env_db
+    command: 'postgres -c config_file="/etc/postgresql.conf"'
     volumes:
-      - django_postgres_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
       # down -vなどでボリュームがない時などを含めた初回起動時に実行されるファイルを指定
       - ./postgresql/sql:/docker-entrypoint-initdb.d
+      - ./postgresql/postgresql.conf:/etc/postgresql.conf
     ports:
       - "5432"
     logging: *default-logging
 
-  web_django:
-    build: django
-    container_name: web_django
-#    environment:
-    # --max-requests 1は開発中にファイルを変更しても反映されないのでさせるために付与。
-    # 付けない場合はファイル更新を通知するために下記をする必要がある
-    # docker exec -it django_web pgrep gunicorn
-    # docker exec -it django_web kill -HUP [↑で確認した番号]
-    command: python3 manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./django:/usr/src/app/
+  cache:
+#    restart: always
+    image: redis:alpine
+    container_name: "cache"
     ports:
-      - "8000:8000"
-    env_file:
-      # 環境変数に設定するファイル
-      - ./django/.env
-    depends_on:
-      - "postgres_django"
+      - "6379"
     logging: *default-logging
 
-#  django_redis:
+#  proxy:
 #    restart: always
-#    image: redis:alpine
-#    container_name: "django_redis"
+#    container_name: proxy
+#    build: ./docker/proxy
+#    privileged: true
+#    environment:
+#      ENABLE_IPV6: "false"
 #    ports:
-#      - "6379"
+#      - "80:80"
+#      - "443:443"
+#    volumes:
+#      - {{ project_cert_dir }}:/etc/nginx/certs
+#      - htpasswd:/etc/nginx/htpasswd
+#      - vhost:/etc/nginx/vhost.d:ro
+#      - html:/usr/share/nginx/html
+#      - /var/run/docker.sock:/tmp/docker.sock:ro
+#    logging: *default-logging
+#
+#  # Let's Encrypt取得・更新用のコンテナ
+#  letsencrypt-nginx:
+#    container_name: letsencrypt-nginx
+#    restart: always
+#    image: jrcs/letsencrypt-nginx-proxy-companion
+#    privileged: true
+#    depends_on:
+#      - "proxy"
+#    volumes:
+#      - {{ project_cert_dir }}:/etc/nginx/certs
+#      - htpasswd:/etc/nginx/htpasswd
+#      - vhost:/etc/nginx/vhost.d
+#      - html:/usr/share/nginx/html
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    logging: *default-logging
+#
+#  postfix:
+#    container_name: postfix
+#    restart: always
+#    build:
+#      context: ./docker/postfix
+#      args:
+#        hostname: {% if sub_domain is defined %}{{ sub_domain }}.{% endif %}{{ domain_name }}
+#        domain_name: {% if sub_domain is defined %}{{ sub_domain }}.{% endif %}{{ domain_name }}
+#    ports:
+#      - "25"
+#      - "110"
 #    logging: *default-logging
 
 volumes:
   htpasswd:
   vhost:
   html:
-  django_postgres_data:
+  db_data:
