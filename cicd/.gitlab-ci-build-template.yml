@@ -1,0 +1,15 @@
+.npm_build_default: &npm_build_default
+  stage: build
+  image: node:14
+  artifacts:
+    paths:
+      - frontend/src/node_modules/
+
+npm-build:
+  <<: *npm_build_default
+  script:
+    - yarn cache clean && yarn install --no-optional
+    - npm run build-$CI_BUILD_REF_NAME
+  only:
+    - develop
+    - master

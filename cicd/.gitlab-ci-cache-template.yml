@@ -1,0 +1,6 @@
+cache:
+  # ブランチ毎にキャッシュする設定
+  key: "$CI_COMMIT_REF_NAME"
+  #  untracked: true
+  paths:
+    - frontend/src/node_modules/

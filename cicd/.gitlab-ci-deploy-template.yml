@@ -1,0 +1,28 @@
+.staging_deploy_default: &staging_deploy_default
+  image: toshiclick/ci-ansible
+#  before_script:
+#  after_script:
+
+.production_deploy_default: &production_deploy_default
+  image: toshiclick/ci-ansible
+#  before_script:
+#  after_script:
+
+# ER図の自動生成
+#er:
+#  stage: deploy
+#  image: toshiclick/chart_app
+#  services:
+#    - postgres:12
+#  variables:
+#    DB_CONNECT_HOST: "postgres"
+#    DB_CONNECT_NAME: "django_db"
+#  script:
+#    # DBマイグレーション
+#    - java -jar /schemaspy.jar
+#  artifacts:
+#    paths:
+#      - output/
+#  dependencies: []
+#  only:
+#    - master

@@ -1,0 +1,24 @@
+# サブモジュールを更新する場合にはこれを有効にする
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+include:
+  - local: '/cicd/.gitlab-ci-cache-template.yml'
+  - local: '/cicd/.gitlab-ci-lint-template.yml'
+  - local: '/cicd/.gitlab-ci-test-template.yml'
+  - local: '/cicd/.gitlab-ci-build-template.yml'
+  - local: '/cicd/.gitlab-ci-deploy-template.yml'
+  - local: '/cicd/.gitlab-ci-e2e-test-template.yml'
+
+stages:
+  - lint
+  - test
+  - build
+#  - deploy
+#  - e2e-test
+
+.except_default: &except_default
+  except:
+    - develop
+    - master
+    - hotfix
