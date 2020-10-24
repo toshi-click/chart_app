@@ -1,0 +1,17 @@
+# ルートの設定（.editorconfigはプロジェクトのルートに置くと良いです）
+root = true
+# 改行コードと改行後ろの空白削除の有無を指定したい。文字コードも。
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+
+# jsの設定
+[*.js]
+indent_style = space
+indent_size = 2
+
+# package.json
+[package.json]
+indent_style = space
+indent_size = 2
