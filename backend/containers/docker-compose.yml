@@ -29,7 +29,7 @@ services:
       - "postgres_django"
     env_file: ./django/.env
     ports:
-      - "8000"
+      - "8000:8000"
     logging: *default-logging
 
   db:
@@ -48,7 +48,7 @@ services:
       - ./postgresql/sql:/docker-entrypoint-initdb.d
       - ./postgresql/postgresql.conf:/etc/postgresql.conf
     ports:
-      - "5432"
+      - "5432:5432"
     logging: *default-logging
 
   cache:
@@ -56,7 +56,7 @@ services:
     image: redis:alpine
     container_name: "cache"
     ports:
-      - "6379"
+      - "6379:6379"
     logging: *default-logging
 
 #  proxy:
