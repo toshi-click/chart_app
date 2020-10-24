@@ -12,8 +12,8 @@ services:
   web:
     #    restart: always
     build:
-      context: .
-      dockerfile: ./django/Dockerfile
+      context: ./django
+      dockerfile: Dockerfile
     container_name: web
     environment:
       VIRTUAL_HOST: web.test
@@ -26,7 +26,7 @@ services:
     volumes:
       - ./django:/usr/src/app
     depends_on:
-      - "postgres_django"
+      - "db"
     env_file: ./django/.env
     ports:
       - "8000:8000"
@@ -35,8 +35,8 @@ services:
   db:
 #    restart: always
     build:
-      context: .
-      dockerfile: postgresql/Dockerfile
+      context: ./postgresql
+      dockerfile: Dockerfile
       args:
         - DB_LANG=ja_JP
     container_name: db
