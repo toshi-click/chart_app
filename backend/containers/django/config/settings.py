@@ -11,13 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
-import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-
-env = environ.Env()
-env.read_env('.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -30,9 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -89,18 +83,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': env.get_value('DATABASE_ENGINE', default='django.db.backends.sqlite3'),
-        'NAME': env.get_value('DATABASE_DB', default=os.path.join(BASE_DIR, 'db.sqlite3')),
-        'USER': env.get_value('DATABASE_USER', default='django_user'),
-        'PASSWORD': env.get_value('DATABASE_PASSWORD', default='password'),
-        'HOST': env.get_value('DATABASE_HOST', default='localhost'),
-        'PORT': env.get_value('DATABASE_PORT', default='5432'),
+        'ENGINE': os.environ['DATABASE_ENGINE'],
+        'NAME': os.environ['DATABASE_DB'],
+        'USER': os.environ['DATABASE_USER'],
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'HOST': os.environ['DATABASE_HOST'],
+        'PORT': os.environ['DATABASE_PORT'],
     }
 }
 
