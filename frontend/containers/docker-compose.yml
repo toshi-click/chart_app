@@ -1,0 +1,20 @@
+version: '3.7'
+x-logging:
+  &default-logging
+  options:
+    max-size: '12m'
+    max-file: '5'
+  driver: json-file
+
+services:
+  node:
+    container_name: node
+    build:
+      context: ./node
+      dockerfile: Dockerfile
+    volumes:
+      - ../src:/usr/src/app
+    command: bash -c "yarn start"
+    ports:
+      - "3000:3000"
+    logging: *default-logging
