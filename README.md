@@ -12,3 +12,5 @@
 ## Frontend
 [フロントエンド用のReadme](./frontend/README.md)
 
+## リポジトリ構成
+![](images/diagram.png)
