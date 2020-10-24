@@ -42,18 +42,11 @@ RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
 # pipenvのインストール
 RUN pip install pipenv
 
-#ADD requirements.txt ./
-#RUN pip install -U pip
-#RUN pip install -r requirements.txt
-#RUN pip install psycopg2-binary
-
 # ローカルマシンののPipfileをコンテナにコピー
 COPY Pipfile ./
 
 # Pipfile.lockを無視してPipfileに記載のパッケージをシステムにインストール
-# その後、pipenvをアンインストール
-RUN pipenv install --system --skip-lock \
-    && pip uninstall -y pipenv virtualenv-clone virtualenv
+RUN pipenv install --system --skip-lock
 
 # シェルスクリプトをコピー
 COPY entrypoint.sh /usr/src/app/entrypoint.sh

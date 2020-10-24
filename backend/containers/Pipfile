@@ -6,10 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-django = "*"
-gunicorn = "*"
 psycopg2 = "*"
 psycopg2-binary = "*"
+gunicorn = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 djangorestframework-gis = "*"
@@ -17,17 +16,7 @@ django-cors-headers = "*"
 django-oauth-toolkit = "*"
 django-environ = "*"
 djoser = "*"
-# TODO ↓使うかちょっとわからんのであとで精査する
-django-crispy-forms = "*"
-django-filter = "*"
-django-pure-pagination = "*"
-coverage = "*"
-django-debug-toolbar = "*"
-wheel = "*"
-django-cleanup = "*"
-Pillow = "*"
-stripe = "*"
-
+Django = "*"
 
 [requires]
 python_version = "3.8"
