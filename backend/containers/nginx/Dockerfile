@@ -27,3 +27,4 @@ RUN apt-get update \
 
 # カスタム設定ファイルを設置
 COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/nginx.conf

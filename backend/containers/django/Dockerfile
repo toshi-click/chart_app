@@ -32,13 +32,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# 依存関係のインストールとpipenvをインストール
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-    && pip install -U pip \
-    && apt-get update \
-    && apt-get install -y libssl-dev libffi-dev libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
 # pipenvのインストール
 RUN pip install pipenv
 
