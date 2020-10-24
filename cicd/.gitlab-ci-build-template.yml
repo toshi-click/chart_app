@@ -9,9 +9,8 @@ npm-build:
   <<: *npm_build_default
   script:
     - yarn cache clean && yarn install --no-optional
-    - yarn install -g next
-#    - npm build build-$CI_BUILD_REF_NAME
     - cd frontend/src
+#    - npm build build-$CI_BUILD_REF_NAME
     - yarn build
   only:
     - develop
