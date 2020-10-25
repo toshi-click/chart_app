@@ -15,7 +15,7 @@ jobs:
       DATABASE_DB: django_db
       DATABASE_USER: postgres
       DATABASE_PASSWORD: password
-      DATABASE_HOST: db
+      DATABASE_HOST: localhost
       CACHE_ENGINE: django_redis.cache.RedisCache
       CACHE_LOCATION: redis://cache:6379/
     services:
