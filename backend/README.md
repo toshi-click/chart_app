@@ -24,8 +24,8 @@ INSTALLED_APPS = (
 
 ### モデルを作ったあとに
 ```
-docker exec -it web python3 manage.py makemigrations restapi
-docker exec -it web python3 manage.py migrate restapi
+docker exec -it web python3 manage.py makemigrations
+docker exec -it web python3 manage.py migrate
 ```
 
 # 管理画面のスーパーユーザーの作成
