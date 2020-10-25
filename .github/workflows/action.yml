@@ -51,7 +51,7 @@ jobs:
     # pythonのバージョン一覧
     strategy:
       matrix:
-        python-version: [ '3.7', '3.8' ]
+        python-version: [ '3.8' ]
     steps:
       # チェックアウト
       - uses: actions/checkout@v1
@@ -65,9 +65,10 @@ jobs:
       - name: Install pipenv and dependencies
         run: |
           cd backend/containers/django
-          python -m pip install --upgrade pip
-          pip install pipenv --upgrade-strategy=only-if-needed
-          pipenv install --dev
+          python3 -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install
       - name: Run test
         run: |
-          pipenv run tests
+          cd backend/containers/django
+          python3 manage.py test

@@ -1,4 +1,4 @@
-phpunit:
+django_test:
   stage: test
   image:
     name: python:3.8
