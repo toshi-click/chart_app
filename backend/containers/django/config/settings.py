@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,12 +20,12 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8uj+u2yc-&fj35frl&1s*0&(^d6odu_dry*wzibels$1wzw6ei'
+SECRET_KEY = os.getenv('SECRET_KEY', "&8-k7f8weyqde!pmk%5mq*%-jpvwsk14najxp&udx&p1zninna")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -34,24 +35,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # blog tutorial
+    'blog.apps.BlogConfig',
+    # rest tutorial
     'rest_framework',
     'oauth2_provider',
     'restapi.apps.RestapiConfig',
 ]
-
-OAUTH2_PROVIDER = {
-    # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope'}
-}
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,19 +77,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': os.environ['DATABASE_ENGINE'],
-        'NAME': os.environ['DATABASE_DB'],
-        'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        'HOST': os.environ['DATABASE_HOST'],
-        'PORT': os.environ['DATABASE_PORT'],
+        'ENGINE': os.getenv('DATABASE_ENGINE','django.db.backends.sqlite3'),
+        'NAME': os.getenv('DATABASE_DB', os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.getenv('DATABASE_USER','django_user'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD','password'),
+        'HOST': os.getenv('DATABASE_HOST','localhost'),
+        'PORT': os.getenv('DATABASE_PORT','5432'),
     }
 }
 
 CACHES = {
     'default': {
-        'BACKEND': os.environ['CACHE_ENGINE'],
-        'LOCATION': os.environ['CACHE_LOCATION'],
+        'BACKEND': os.getenv('CACHE_ENGINE'),
+        'LOCATION': os.getenv('CACHE_LOCATION'),
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient'
         }
@@ -108,7 +98,6 @@ CACHES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -126,15 +115,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
-
 LANGUAGE_CODE = 'ja'
-
 TIME_ZONE = 'Asia/Tokyo'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -145,3 +129,28 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 #     os.path.join(BASE_DIR, 'blog/static/'),
 # )
 
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope'}
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+}
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+)
+
+LOGIN_REDIRECT_URL = '/'
