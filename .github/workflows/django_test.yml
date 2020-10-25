@@ -2,18 +2,6 @@ name: Run django test
 
 on: [push]
 
-env:
-  DATABASE_ENGINE: django.db.backends.postgresql_psycopg2
-  DATABASE_DB: django_db
-  DATABASE_USER: postgres
-  DATABASE_PASSWORD: password
-  DATABASE_HOST: db
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: password
-  POSTGRES_DB: django_db
-  CACHE_ENGINE: django_redis.cache.RedisCache
-  CACHE_LOCATION: redis://cache:6379/
-
 jobs:
   back_build:
     # 実行するインスタンス
@@ -26,11 +14,23 @@ jobs:
     services:
       db:
         image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: django_db
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
+      env:
+        DATABASE_ENGINE: django.db.backends.postgresql_psycopg2
+        DATABASE_DB: django_db
+        DATABASE_USER: postgres
+        DATABASE_PASSWORD: password
+        DATABASE_HOST: db
+        CACHE_ENGINE: django_redis.cache.RedisCache
+        CACHE_LOCATION: redis://cache:6379/
       # チェックアウト
       - uses: actions/checkout@v1
 
