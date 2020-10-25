@@ -44,31 +44,3 @@ jobs:
 #          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 #          restore-keys: |
 #            ${{ runner.os }}-node-
-
-  back_build:
-    # 実行するインスタンス
-    runs-on: ubuntu-latest
-    # pythonのバージョン一覧
-    strategy:
-      matrix:
-        python-version: [ '3.8' ]
-    steps:
-      # チェックアウト
-      - uses: actions/checkout@v1
-
-      # 使用するpythonのバージョンを指定
-      - name: Use Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install pipenv and dependencies
-        run: |
-          cd backend/containers/django
-          python3 -m pip install --upgrade pip
-          pip install pipenv
-          pipenv install
-      - name: Run test
-        run: |
-          cd backend/containers/django
-          python3 manage.py test
