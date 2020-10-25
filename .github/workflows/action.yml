@@ -23,7 +23,7 @@ jobs:
 
       # パッケージのインストール
       - name: install
-        run: yarn install --frozen-lockfile
+        run: cd frontend/src && yarn install --frozen-lockfile
 
       # アプリのビルド
       - name: build
