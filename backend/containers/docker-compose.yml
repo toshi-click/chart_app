@@ -29,7 +29,7 @@ services:
       - "db"
     env_file: .env
     ports:
-      - "8000:8000"
+      - "8000"
     logging: *default-logging
 
   db:
@@ -65,8 +65,12 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
+    volumes:
+      - ./django/static:/static
     ports:
-      - "80:80"
+      - "8000:80"
+    depends_on:
+      - "web"
     logging: *default-logging
 #
 #  # Let's Encrypt取得・更新用のコンテナ
