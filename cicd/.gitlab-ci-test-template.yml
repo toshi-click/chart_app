@@ -1,0 +1,33 @@
+phpunit:
+  stage: test
+  image:
+    name: python:3.8
+  services:
+    - name: postgres:12
+      alias: db
+    - name: redis:alpine
+      alias: cache
+  variables:
+    DATABASE_ENGINE: django.db.backends.postgresql_psycopg2
+    DATABASE_DB: django_db
+    DATABASE_USER: postgres
+    DATABASE_PASSWORD: password
+    DATABASE_HOST: db
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: password
+    POSTGRES_DB: django_db
+    CACHE_ENGINE: django_redis.cache.RedisCache
+    CACHE_LOCATION: redis://cache:6379/
+  script:
+    - cd backend/containers/django
+    - pip install pipenv
+    - pipenv install --system --skip-lock
+    - python3 manage.py test
+#  artifacts:
+#    when: always
+#    paths:
+#      - log/
+#    expire_in: 6 hrs
+  only:
+    - branches
+    - merge_requests
