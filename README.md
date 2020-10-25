@@ -1,4 +1,6 @@
 # chart_app
+![Run Next.js](https://github.com/toshi-click/chart_app/workflows/Run%20build%20test/badge.svg)
+![Run django](https://github.com/toshi-click/chart_app/workflows/Run%20django%20test/badge.svg)
 
 ## 使用技術
 - Backend
