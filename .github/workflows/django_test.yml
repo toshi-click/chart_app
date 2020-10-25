@@ -10,7 +10,14 @@ jobs:
     strategy:
       matrix:
         python-version: [ '3.8' ]
-
+    env:
+      DATABASE_ENGINE: django.db.backends.postgresql_psycopg2
+      DATABASE_DB: django_db
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: db
+      CACHE_ENGINE: django_redis.cache.RedisCache
+      CACHE_LOCATION: redis://cache:6379/
     services:
       db:
         image: postgres:12
@@ -23,14 +30,6 @@ jobs:
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      env:
-        DATABASE_ENGINE: django.db.backends.postgresql_psycopg2
-        DATABASE_DB: django_db
-        DATABASE_USER: postgres
-        DATABASE_PASSWORD: password
-        DATABASE_HOST: db
-        CACHE_ENGINE: django_redis.cache.RedisCache
-        CACHE_LOCATION: redis://cache:6379/
       # チェックアウト
       - uses: actions/checkout@v1
 
