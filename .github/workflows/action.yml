@@ -45,20 +45,29 @@ jobs:
 #          restore-keys: |
 #            ${{ runner.os }}-node-
 
+  back_build:
+    # 実行するインスタンス
+    runs-on: ubuntu-latest
+    # pythonのバージョン一覧
+    strategy:
+      matrix:
+        python-version: [ '3.7', '3.8' ]
+    steps:
+      # チェックアウト
+      - uses: actions/checkout@v1
 
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - name: Set up Python 3.7
-#        uses: actions/setup-python@v1
-#        with:
-#          python-version: 3.7
-#      - name: Install pipenv and dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install pipenv --upgrade-strategy=only-if-needed
-#          pipenv install --dev
-#      - name: Run test
-#        run: |
-#          pipenv run tests
+      # 使用するpythonのバージョンを指定
+      - name: Use Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pipenv and dependencies
+        run: |
+          cd backend/containers/django
+          python -m pip install --upgrade pip
+          pip install pipenv --upgrade-strategy=only-if-needed
+          pipenv install --dev
+      - name: Run test
+        run: |
+          pipenv run tests
