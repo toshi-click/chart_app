@@ -24,12 +24,12 @@ jobs:
       # パッケージのインストール
       - name: install
         run: yarn install --frozen-lockfile
-        
+
       # アプリのビルド
       - name: build
-        run: yarn build
+        run: cd frontend/src && yarn build
 
-      # gh-pagesを使って公開
+      # gh-pagesを使って公開https://qiita.com/nouka/items/aae1e68dfe81e4441c4f
 #      - name: deploy
 #        uses: peaceiris/actions-gh-pages@v2
 #        env:
