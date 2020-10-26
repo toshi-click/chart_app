@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'oauth2_provider',
     'restapi.apps.RestapiConfig',
+    # chart
+    'chart.apps.ChartConfig',
 ]
 
 MIDDLEWARE = [
@@ -86,15 +88,15 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': os.getenv('CACHE_ENGINE'),
-        'LOCATION': os.getenv('CACHE_LOCATION'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
-        }
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': os.getenv('CACHE_ENGINE'),
+#         'LOCATION': os.getenv('CACHE_LOCATION'),
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+#         }
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
