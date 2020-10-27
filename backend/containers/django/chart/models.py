@@ -8,6 +8,7 @@ class Company(models.Model):
 class RawPrices(models.Model):
     code = models.IntegerField("銘柄コード")
     date = models.DateField("日付")
+    datetime = models.DateTimeField("日時")
     open_price = models.IntegerField("始値")
     close_price = models.IntegerField("終値")
     high_price = models.IntegerField("高値")
