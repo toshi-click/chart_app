@@ -1,6 +1,7 @@
 from django.test import TestCase
 from ..models import Company, RawPrices
 
+
 class CompanyModelTests(TestCase):
     def test_is_empty(self):
         """初期状態では何も登録されていないことをチェック"""
@@ -14,7 +15,7 @@ class CompanyModelTests(TestCase):
         saved_companys = Company.objects.all()
         self.assertEqual(saved_companys.count(), 1)
 
-    def test_saving_and_retrieving_post(self):
+    def test_saving_and_retrieving_company(self):
         """内容を指定してデータを保存し、すぐに取り出した時に保存した時と同じ値が返されることをテスト"""
         company = Company()
         code = 2
@@ -28,6 +29,7 @@ class CompanyModelTests(TestCase):
 
         self.assertEqual(actual_company.code, code)
         self.assertEqual(actual_company.name, name)
+
 
 class RawPricesModelTests(TestCase):
     def test_is_empty(self):
