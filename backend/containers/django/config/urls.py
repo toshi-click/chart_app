@@ -25,4 +25,5 @@ urlpatterns = [
     path('oauth2/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('', include('blog.urls')),
     path('', include('restapi.urls')),
+    path('', include('chart.urls')),
 ]
