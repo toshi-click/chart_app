@@ -4,6 +4,8 @@ from django.db import models
 class Company(models.Model):
     code = models.IntegerField("銘柄コード", primary_key=True)
     name = models.CharField("会社名", max_length=200)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=True)
 
 class RawPrices(models.Model):
     code = models.IntegerField("銘柄コード")
@@ -17,3 +19,5 @@ class RawPrices(models.Model):
     adjustment_close_price = models.FloatField("調整後終値")
     moving_averages25 = models.FloatField("25日移動平均線")
     moving_averages75 = models.FloatField("75日移動平均線")
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=True)

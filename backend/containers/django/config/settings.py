@@ -157,6 +157,7 @@ CORS_ORIGIN_WHITELIST = (
 
 LOGIN_REDIRECT_URL = '/'
 
+# logging 参考：https://chaingng.github.io/post/django_logger/
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
