@@ -7,6 +7,11 @@ class Company(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
 
+    # Company モデルが直接呼び出された時に返す値を定義
+    def __str__(self):
+        # 会社名を返す
+        return self.name
+
 class RawPrices(models.Model):
     code = models.IntegerField("銘柄コード")
     date = models.DateField("日付")
