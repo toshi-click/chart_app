@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap4',
     # blog tutorial
     'blog.apps.BlogConfig',
     # rest tutorial

@@ -17,6 +17,7 @@ django-cors-headers = "*"
 django-oauth-toolkit = "*"
 django-environ = "*"
 djoser = "*"
+django-bootstrap4 = "*"
 # TODO ↓使うかちょっとわからんのであとで精査する
 django-crispy-forms = "*"
 django-filter = "*"
