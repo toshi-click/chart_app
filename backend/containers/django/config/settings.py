@@ -73,6 +73,10 @@ TEMPLATES = [
         },
     },
 ]
+# メディアファイルに関する設定
+# ファイルをアップロードする機能で使用する
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
