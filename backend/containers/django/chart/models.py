@@ -7,6 +7,12 @@ class Company(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        # DB内で使用するテーブル名
+        db_table = 'company_table'
+        # Adminサイトで表示するテーブル名
+        verbose_name_plural = 'company_table'
+
     # Company モデルが直接呼び出された時に返す値を定義
     def __str__(self):
         # 会社名を返す
