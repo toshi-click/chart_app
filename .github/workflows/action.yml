@@ -23,11 +23,11 @@ jobs:
 
       # パッケージのインストール
       - name: install
-        run: cd frontend/src && yarn install --frozen-lockfile
+        run: cd frontend/chart-app && yarn install --frozen-lockfile
 
       # アプリのビルド
       - name: build
-        run: cd frontend/src && yarn build
+        run: cd frontend/chart-app && yarn build
 
       # gh-pagesを使って公開https://qiita.com/nouka/items/aae1e68dfe81e4441c4f
 #      - name: deploy

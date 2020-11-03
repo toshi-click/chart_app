@@ -3,7 +3,7 @@ Next.js
 環境構築
 # Next.js をセットアップ
 # （現在のディレクトリで作成しますが必要に応じて変更）
-docker run --rm -it -v $PWD:/tmp/next -w /tmp/next node:latest npx create-next-app
+docker run --rm -it -v $PWD:/tmp/next -w /tmp/next node:latest npx create-react-native-app -t with-nextjs
 
 # pages を src ディレクトリへ移動
 $ mkdir src ; mv pages/ src/pages
