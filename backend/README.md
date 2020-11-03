@@ -54,3 +54,8 @@ docker exec -it web python3 manage.py migrate restapi
 docker exec -it web pipenv install
 docker exec -it web pipenv update
 ```
+
+## バッチ実行
+```bash
+docker exec -it web python3 manage.py test_command
+```
