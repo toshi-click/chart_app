@@ -13,8 +13,8 @@ services:
       context: ./node
       dockerfile: Dockerfile
     volumes:
-      - ../src:/usr/src/app
-    command: bash -c "yarn start"
+      - ../chart-app:/usr/src/app
+    command: bash -c "yarn next dev"
     ports:
       - "3000:3000"
     logging: *default-logging
