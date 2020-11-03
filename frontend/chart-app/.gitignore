@@ -1,26 +1,34 @@
-# @generated: @expo/next-adapter@2.1.0
-node_modules/**/*
-.expo/*
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
-web-report/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# debug
-yarn-debug.log*
-yarn-error.log*
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-# macOS
-.DS_Store
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
 
 # misc
 .DS_Store
-.env*
+*.pem
 
-.next
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# vercel
+.vercel

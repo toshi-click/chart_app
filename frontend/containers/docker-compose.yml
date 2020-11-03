@@ -14,7 +14,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ../chart-app:/usr/src/app
-    command: bash -c "yarn next dev"
+    command: bash -c "yarn dev"
     ports:
       - "3000:3000"
     logging: *default-logging
