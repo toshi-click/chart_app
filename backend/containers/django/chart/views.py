@@ -9,3 +9,8 @@ class IndexView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
 index_page = IndexView.as_view()
+
+class ChartView(View):
+    def get(self, request, *args, **kwargs):
+
+        return render(request, 'index.html')
