@@ -1,0 +1,9 @@
+{
+  "name": "chart-app",
+  "short_name": "chart-app",
+  "theme_color": "#24b804",
+  "background_color": "#2196f3",
+  "display": "browser",
+  "scope": "/",
+  "start_url": "/"
+}
