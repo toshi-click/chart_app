@@ -15,5 +15,9 @@ module.exports = {
         jsx: 'react'
       }
     }
+  },
+  // ストーリーファイルを読み込めるようにする
+  transform: {
+    '^.+\\.stories\\.tsx$': '@storybook/addon-storyshots/injectFileName'
   }
 }
