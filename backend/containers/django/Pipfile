@@ -20,6 +20,7 @@ django-environ = "==0.4.5"
 djoser = "==2.1.0"
 django-bootstrap4 = "==2.3.1"
 # 株価取得用
+xlrd = "*"
 django-pandas = "==0.6.2"
 pandas-datareader = "*"
 # TODO ↓使うかちょっとわからんのであとで精査する
