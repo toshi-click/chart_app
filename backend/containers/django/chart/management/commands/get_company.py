@@ -6,6 +6,7 @@ import logging
 from chart.models import Company
 import pandas as pd
 import requests
+from django.conf import settings
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -18,12 +19,12 @@ class Command(BaseCommand):
         dls = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls"
         resp = requests.get(dls)
 
-        output = open('company.xls', 'wb')
+        output = open(settings.MEDIA_ROOT + '/company.xls', 'wb')
         output.write(resp.content)
         output.close()
 
         # pandasでexcelファイルの読み込みとdf整形など
-        df = pd.read_excel('company.xls')
+        df = pd.read_excel(settings.MEDIA_ROOT + '/company.xls')
         df = df.drop(1, axis=0)
         df.columns = ['date','code','name','market_products_kubun','industries_code','industries_kubun', 'detailed_industries_code', 'detailed_industries_kubun', 'scale_code', 'scale_kubun']
         company = Company()
