@@ -27,21 +27,30 @@ class Command(BaseCommand):
         df = pd.read_excel(settings.MEDIA_ROOT + '/company.xls')
         df = df.drop(1, axis=0)
         df.columns = ['date','code','name','market_products_kubun','industries_code','industries_kubun', 'detailed_industries_code', 'detailed_industries_kubun', 'scale_code', 'scale_kubun']
-        company = Company()
 
-        for index, item in df.iterrows():
-            company.code = item['code']
-            company.name = item['name']
-            company.market_products_kubun = item['market_products_kubun']
-            if item['industries_code'] != '-':
-                company.industries_code = item['industries_code']
-            company.industries_kubun = item['industries_kubun']
-            if item['detailed_industries_code'] != '-':
-                company.detailed_industries_code = item['detailed_industries_code']
-            company.detailed_industries_kubun = item['detailed_industries_kubun']
-            if item['scale_code'] != '-':
-                company.scale_code = item['scale_code']
-            company.scale_kubun = item['scale_kubun']
-            company.created = make_aware(dt.datetime.now())
-            company.updated = make_aware(dt.datetime.now())
-            company.save()
+        # DBから1件取得する。取得できれば、1件目が取得でき、データがなければ、Noneになる。
+        db_date = Company.objects.all().first()
+
+        # 1行目のデータ生成日とDB内のデータ日時を比較して、同じなら処理スキップ、違うならテーブルをクリアして入れ直す
+        if df.iloc[1]['date'] != db_date:
+            if db_date is not None:
+                Company.objects.all().delete()
+
+            for index, item in df.iterrows():
+                company = Company()
+                company.data_date =item['date']
+                company.code = item['code']
+                company.name = item['name']
+                company.market_products_kubun = item['market_products_kubun']
+                if item['industries_code'] != '-':
+                    company.industries_code = item['industries_code']
+                company.industries_kubun = item['industries_kubun']
+                if item['detailed_industries_code'] != '-':
+                    company.detailed_industries_code = item['detailed_industries_code']
+                company.detailed_industries_kubun = item['detailed_industries_kubun']
+                if item['scale_code'] != '-':
+                    company.scale_code = item['scale_code']
+                company.scale_kubun = item['scale_kubun']
+                # company.created = make_aware(dt.datetime.now())
+                # company.updated = make_aware(dt.datetime.now())
+                company.save()

@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Company(models.Model):
+    data_date = models.CharField("データ作成日時", max_length=30)
     code = models.IntegerField("銘柄コード", primary_key=True)
     name = models.CharField("会社名", max_length=200)
     market_products_kubun = models.CharField("市場・商品区分", max_length=200)
