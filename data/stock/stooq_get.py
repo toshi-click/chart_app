@@ -17,7 +17,7 @@ import googleapiclient.discovery
 import googleapiclient.http
 
 import time
-
+import sys
 import pandas as pd
 import pandas_datareader.data as web
 # Google Drive認証
@@ -37,13 +37,42 @@ company_df = company_df.drop(drop_col, axis=1)  # 不要な列の削除
 
 ## j=0～19 で一度にアクセスしすぎないようにする
 j = 0
+# j = 1
+# j = 2
+# j = 3
+# j = 4
+# j = 5
+# j = 6
+# j = 7
+# j = 8
+# j = 9
+# j = 10
+# j = 11
+# j = 12
+# j = 13
+# j = 14
+# j = 15
+# j = 16
+# j = 17
+# j = 18
+# j = 19
+count = 0
+tmp_code = 0
 for index, item in company_df.iterrows():
     if j <= index / (len(company_df) / 20) < j + 1:
+        if count == 0:
+            print('from:'+str(item['code'])+' start!')
+            count = 1
         ### 中身を文字型に変換して'.JP'を付与
         code = str(item['code']) + '.JP'
         stock_df = web.DataReader(code, "stooq")
         # 早すぎると規制されるっぽいのでsleep
         time.sleep(1)
+
+        # 1日の制限超えた応答きたらエラー終了させる
+        if stock_df.empty:
+            print('error:' + str(item['code']) + ' daily over!')
+            sys.exit(1)
 
         stock_df['Code'] = item['code']
 
@@ -53,6 +82,7 @@ for index, item in company_df.iterrows():
         # csv保存：[stock_code].csv
         filename = "/content/drive/My Drive/stock/" + str(item['code']) + ".csv"
         stock_df.to_csv(filename, encoding="utf-8")
-        print(str(item['code']) + 'saved_csv finish!')
+        tmp_code = item['code']
 
+print('to:'+str(tmp_code)+' end!')
 print('All_finish!')
