@@ -1,4 +1,6 @@
 from django.db import models
+import datetime as dt
+
 
 # Create your models here.
 class Company(models.Model):
@@ -26,6 +28,7 @@ class Company(models.Model):
         # 会社名を返す
         return self.name
 
+
 class RawPrices(models.Model):
     code = models.IntegerField("銘柄コード")
     date = models.DateField("日付")
@@ -34,10 +37,24 @@ class RawPrices(models.Model):
     high_price = models.IntegerField("高値")
     low_price = models.IntegerField("安値")
     volume = models.IntegerField("出来高")
-    moving_averages5 = models.FloatField("5日移動平均線")
-    moving_averages25 = models.FloatField("25日移動平均線")
-    moving_averages75 = models.FloatField("75日移動平均線")
-    moving_averages100 = models.FloatField("100日移動平均線")
-    moving_averages200 = models.FloatField("200日移動平均線")
+    moving_averages5 = models.FloatField("5日移動平均線", null=True)
+    moving_averages25 = models.FloatField("25日移動平均線", null=True)
+    moving_averages75 = models.FloatField("75日移動平均線", null=True)
+    moving_averages100 = models.FloatField("100日移動平均線", null=True)
+    moving_averages200 = models.FloatField("200日移動平均線", null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # 銘柄コードと日付で複合ユニーク成約
+        # https://mizzsugar.hatenablog.com/?page=1561192506
+        constraints = [
+            # 同じ銘柄コードと日付を重複させない
+            models.UniqueConstraint(fields=['code', 'date'], name='unique_booking'),
+        ]
+
+    @classmethod
+    def check_duplicate(cls, code: int, date: dt.date) -> bool:
+        # 同じ日に同じ銘柄コードがすでにDBに登録されているかどうかを判定します
+        # 登録されていたらTrue, されていなかったらFalseを返します。
+        return cls.objects.filter(code=code, date=date).exists()
