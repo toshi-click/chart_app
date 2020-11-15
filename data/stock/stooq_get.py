@@ -16,7 +16,7 @@ import google.colab
 import googleapiclient.discovery
 import googleapiclient.http
 
-import datetime
+import time
 
 import pandas as pd
 import pandas_datareader.data as web
@@ -35,13 +35,15 @@ company_df.columns = ['date', 'code', 'name', 'lst', 'sectorCode', 'sectorName',
 drop_col = ['flr1', 'flr2', 'flr3', 'flr4']
 company_df = company_df.drop(drop_col, axis=1)  # 不要な列の削除
 
-## dfのグルーピングとグループ指定(1グループ240銘柄に限定する)
+## j=0～19 で一度にアクセスしすぎないようにする
 j = 0
 for index, item in company_df.iterrows():
     if j <= index / (len(company_df) / 20) < j + 1:
         ### 中身を文字型に変換して'.JP'を付与
         code = str(item['code']) + '.JP'
         stock_df = web.DataReader(code, "stooq")
+        # 早すぎると規制されるっぽいのでsleep
+        time.sleep(1)
 
         stock_df['Code'] = item['code']
 
