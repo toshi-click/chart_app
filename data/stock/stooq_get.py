@@ -51,7 +51,7 @@ for index, item in company_df.iterrows():
         stock_df.reindex(columns=['Code', 'Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
 
         # csv保存：[stock_code].csv
-        filename = "/content/drive/My Drive/stock/str(item['code'])" + ".csv"
+        filename = "/content/drive/My Drive/stock/" + str(item['code']) + ".csv"
         stock_df.to_csv(filename, encoding="utf-8")
         print(str(item['code']) + 'saved_csv finish!')
 
