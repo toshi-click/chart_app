@@ -69,20 +69,20 @@ for index, item in company_df.iterrows():
         # 早すぎると規制されるっぽいのでsleep
         time.sleep(1)
 
-        # 1日の制限超えた応答きたらエラー終了させる
+        # 1日の制限超えた応答きたらエラー
         if stock_df.empty:
-            print('error:' + str(item['code']) + ' daily over!')
-            sys.exit(1)
+            print(stock_df)
+            print('error:' + str(item['code']) + ' daily over!?')
+        else:
+            stock_df['Code'] = item['code']
 
-        stock_df['Code'] = item['code']
+            # 後処理のために明示的にカラムを並び替える
+            stock_df.reindex(columns=['Code', 'Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
 
-        # 後処理のために明示的にカラムを並び替える
-        stock_df.reindex(columns=['Code', 'Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
-
-        # csv保存：[stock_code].csv
-        filename = "/content/drive/My Drive/stock/" + str(item['code']) + ".csv"
-        stock_df.to_csv(filename, encoding="utf-8")
-        tmp_code = item['code']
+            # csv保存：[stock_code].csv
+            filename = "/content/drive/My Drive/stock/" + str(item['code']) + ".csv"
+            stock_df.to_csv(filename, encoding="utf-8")
+            tmp_code = item['code']
 
 print('to:'+str(tmp_code)+' end!')
 print('All_finish!')

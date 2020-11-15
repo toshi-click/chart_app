@@ -19,10 +19,10 @@ class Command(BaseCommand):
             # 1行目はカラムがあるので除去する
             #df = csv_file.drop(1, axis=0)
             for index, item in csv_file.iterrows():
-                raw_price = RawPrices()
                 if RawPrices.check_duplicate(code=item['Code'], date=item['Date']):
-                    raw_price = RawPrices.objects.filter(code=item['Code'], date=item['Date'])
+                    raw_price = RawPrices.objects.filter(code=item['Code'], date=item['Date']).first()
                 else:
+                    raw_price = RawPrices()
                     raw_price.code = item['Code']
                     raw_price.date = item['Date']
 

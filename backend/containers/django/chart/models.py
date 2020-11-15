@@ -36,7 +36,7 @@ class RawPrices(models.Model):
     close_price = models.IntegerField("終値")
     high_price = models.IntegerField("高値")
     low_price = models.IntegerField("安値")
-    volume = models.IntegerField("出来高")
+    volume = models.BigIntegerField("出来高")
     moving_averages5 = models.FloatField("5日移動平均線", null=True)
     moving_averages25 = models.FloatField("25日移動平均線", null=True)
     moving_averages75 = models.FloatField("75日移動平均線", null=True)
