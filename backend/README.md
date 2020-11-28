@@ -59,3 +59,8 @@ docker exec -it web pipenv update
 ```bash
 docker exec -it web python3 manage.py test_command
 ```
+
+## DBバックアップ
+```bash
+docker exec -it db bash -c 'pg_dump -d django_db -U postgres > /docker-entrypoint-initdb.d/dump.sql'
+```

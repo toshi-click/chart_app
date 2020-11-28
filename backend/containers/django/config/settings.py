@@ -205,5 +205,9 @@ LOGGING = {
         'py.warnings': {
             'handlers': ['console'],
         },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
     }
 }
