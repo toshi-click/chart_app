@@ -57,7 +57,10 @@ docker exec -it web pipenv update
 
 ## バッチ実行
 ```bash
-docker exec -it web python3 manage.py test_command
+# 東証の上場企業を取得してinsert
+docker exec -it web python3 manage.py get_company
+# 取得した株価データcsvをinsertする
+docker exec -it web python3 manage.py stock_import_csv
 ```
 
 ## DBバックアップ
