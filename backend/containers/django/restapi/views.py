@@ -1,8 +1,16 @@
 from rest_framework import generics, permissions
 from .models import Snippet
 from django.contrib.auth.models import User
-from .serializers import SnippetSerializer, UserSerializer
+from .serializers import SnippetSerializer, UserSerializer, StockSerializer
 from .permissions import IsOwnerOrReadOnly
+
+from chart.models import RawPrices
+
+class StockList(generics.ListCreateAPIView):
+    permission_classes = [permissions.AllowAny]
+    # 一旦1306固定で最新30件取得する
+    stock = RawPrices.objects.filter(code=1306).order_by('date').reverse().all()[:30]
+    serializer_class = StockSerializer
 
 class SnippetList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
