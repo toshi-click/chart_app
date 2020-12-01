@@ -63,7 +63,10 @@ docker exec -it web python3 manage.py get_company
 docker exec -it web python3 manage.py stock_import_csv
 ```
 
-## DBバックアップ
+## DBバックアップ＆リストア
 ```bash
 docker exec -it db bash -c 'pg_dump -d django_db -U postgres > /docker-entrypoint-initdb.d/dump.sql'
+
+docker rm -f db
+docker volume rm containers_db_data
 ```
