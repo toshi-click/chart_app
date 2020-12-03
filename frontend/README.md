@@ -22,8 +22,8 @@ docker run --rm -it -v $PWD:/tmp/next -w /tmp/next node:latest yarn create next-
 
 # pages を src ディレクトリへ移動
 # Next.js で v9.1 から src に pages を入れること可能になったので、src に入れる形で進めます。
-cd chart-app
-mkdir src ; mv pages/ src/pages
+sudo mkdir -p src && sudo mv pages/ src/pages & sudo mv styles/ src/styles
+  
 
 # Next.jsで作った環境でTypeScriptを使えるようにする
 docker exec -it node yarn add --dev typescript @types/react @types/react-dom @types/node
