@@ -1,9 +1,24 @@
-Next.js
-https://qiita.com/syuji-higa/items/931e44046c17f53b432b
+# Frontend
+Next.js + TypeScript
+
+[参考](https://zenn.dev/higa/articles/d7bf3460dafb1734ef43)
+
+
+- フレームワーク： Next.js v10.0.2 (React v17.0.1)
+- 静的型付け： TypeScript v4.0.5
+- PWA： next-pwa v3.1.5
+- スタイリング： CSS Modules + SASS v1.29.0
+- 状態管理： Recoil v0.1.2
+- 静的解析＆整形： EditorConfig + ESLint v7.14.0 + Prettier v2.2.0
+- テスト： Jest v26.6.3 + React Testing Library v11.2.2 + Cypress v6.0.1
+- コンポーネントカタログ: Stroybook v6.1.9 (StoryShots v6.1.9 を含む)
+- フックスクリプト： lint-staged v10.5.2 + husky v4.3.0
+
+
 環境構築
 # Next.js をセットアップ
 # （現在のディレクトリで作成しますが必要に応じて変更）
-docker run --rm -it -v $PWD:/tmp/next -w /tmp/next node:latest npx create-next-app chart-app
+docker run --rm -it -v $PWD:/tmp/next -w /tmp/next node:latest yarn create next-app .
 
 # pages を src ディレクトリへ移動
 # Next.js で v9.1 から src に pages を入れること可能になったので、src に入れる形で進めます。
