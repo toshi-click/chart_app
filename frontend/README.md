@@ -238,3 +238,126 @@ docker exec -it node yarn add -D sanitize.css
 import 'sanitize.css'
 ```
 
+## 静的解析と整形のツールを追加
+### EditorConfig の追加
+```.editorconfig
+# editorconfig.org
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false
+```
+
+### Prettier の追加
+インストール
+```
+docker exec -it node yarn add -D prettier
+```
+### 設定ファイルの追加
+```.prettierrc.js
+module.exports = {
+  semi: false,
+  arrowParens: 'always',
+  singleQuote: true,
+}
+```
+
+### ESLint の追加
+ESLint の関連モジュールをインストールします。
+```
+docker exec -it node yarn add -D eslint eslint-plugin-react \
+                                 eslint-config-prettier eslint-plugin-prettier \
+                                 @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+### 設定ファイルの追加
+```.eslintrc.js
+module.exports = {
+  ignorePatterns: ['!.eslintrc.js', '!.prettierrc.js'],
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:prettier/recommended',
+    'prettier/@typescript-eslint'
+  ],
+  plugins: ['@typescript-eslint', 'react'],
+  parser: '@typescript-eslint/parser',
+  env: {
+    browser: true,
+    node: true,
+    es6: true,
+    jest: true
+  },
+  parserOptions: {
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
+  rules: {
+    // 必要に応じてルールを追加
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
+  }
+}
+```
+
+### Next.js の設定ファイルを修正
+Next.js の設定ファイルの先頭に eslint-disable を設定する。
+```next.config.js
+/* eslint-disable
+   @typescript-eslint/no-var-requires
+*/
+```
+
+### NPM スクリプトの追加
+ESLint を実行する NPM スクリプトを追記します。
+```package.json
+{
+  "scripts": {
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore ."
+  }
+}
+```
+Lint実行テスト
+```
+docker exec -it node yarn lint
+# 自動整形
+docker exec -it node yarn lint --fix
+```
+
+### VSCode の設定
+```.vscode/settings.json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
+}
+```
+
+### 無視ファイルを追加
+```.gitignore
+# ESLint のキャッシュファイルを追加
+.eslintcache
+```
