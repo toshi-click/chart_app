@@ -38,6 +38,18 @@ docker exec -it node yarn dev
 # src ディレクトリ配下の js と jsx のファイルを ts と tsx に変換
 find src/pages -name "_app.js" -or -name "index.js" | sed 'p;s/.js$/.tsx/' | xargs -n2 mv & find src/pages/api -name "*.js" | sed 'p;s/.js$/.ts/' | xargs -n2 mv
 
+# App コンポーネントを変更
+App コンポーネントを TypeScript に対応します。
+```src/pages/_app.jsx
+// React と AppProps を読み込む
+import React from 'react'
+import { AppProps } from 'next/app'
+
+// 引数に型を追加する
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+  // 関数の内容はそのまま
+}
+```
 
 # PWA のモジュールをインストール
 docker exec -it node yarn add --dev next-offline

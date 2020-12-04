@@ -1,6 +1,10 @@
 import '../styles/globals.css'
+// React と AppProps を読み込む
+import React from 'react'
+import { AppProps } from 'next/app'
 
-function MyApp({ Component, pageProps }) {
+// 引数に型を追加する
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return <Component {...pageProps} />
 }
 
