@@ -361,3 +361,64 @@ docker exec -it node yarn lint --fix
 # ESLint のキャッシュファイルを追加
 .eslintcache
 ```
+
+## テストの追加
+### Jest を追加
+```
+# Jest 関連モジュールをインストール
+docker exec -it node yarn add -D jest identity-obj-proxy
+
+# Jest の TypeScript に関するモジュールをインストール
+docker exec -it node yarn add -D ts-jest @types/jest
+```
+### 設定ファイルの追加
+```jest.config.js
+module.exports = {
+  preset: 'ts-jest',
+  roots: ['<rootDir>/src'],
+  moduleNameMapper: {
+    // CSS モックをモックする設定
+    '\\.(css|scss)$': 'identity-obj-proxy',
+    // pages と components ディレクトリのエイリアスを設定（必要であれば他のディレクトリも追加）
+    '^(pages|components)/(.+)': '<rootDir>/src/$1/$2',
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  globals: {
+    'ts-jest': {
+      tsconfig: {
+        jsx: 'react',
+      },
+    },
+  },
+}
+```
+
+### NPM スクリプトの追加
+```package.json
+{
+  "scripts": {
+    "test": "jest src/__tests__/.*/*.test.tsx?$",
+  }
+}
+```
+### テストの追加
+テストファイルを置くフォルダと、サンプルのテストファイルを作成します。
+```
+mkdir src/__tests__ && touch src/__tests__/Sample.test.tsx
+```
+
+```src/__tests__/Smaple.test.tsx
+/// <reference types="jest" />
+
+import React from 'react'
+import Home from 'pages/index'
+
+it('Home ページコンポーネントが存在している', () => {
+  expect(Home).toBeTruthy()
+})
+```
+
+### テストのテスト
+```
+docker exec -it node yarn test
+```
