@@ -29,16 +29,17 @@ cd ../containers/
 docker-compose up -d
 cd ../chart-app
 
+# TypeScript に対応
 # Next.jsで作った環境でTypeScriptを使えるようにする
 docker exec -it node yarn add -D typescript @types/react @types/react-dom @types/node
 
-# Next.js を開発モードで起動することで必要なファイルを自動生成
+### Next.js を開発モードで起動することで必要なファイルを自動生成
 docker exec -it node yarn dev
 
-# src ディレクトリ配下の js と jsx のファイルを ts と tsx に変換
+### src ディレクトリ配下の js と jsx のファイルを ts と tsx に変換
 find src/pages -name "_app.js" -or -name "index.js" | sed 'p;s/.js$/.tsx/' | xargs -n2 mv & find src/pages/api -name "*.js" | sed 'p;s/.js$/.ts/' | xargs -n2 mv
 
-# App コンポーネントを変更
+### App コンポーネントを変更
 App コンポーネントを TypeScript に対応します。
 ```src/pages/_app.jsx
 // React と AppProps を読み込む
@@ -49,6 +50,22 @@ import { AppProps } from 'next/app'
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   // 関数の内容はそのまま
 }
+```
+
+### ページコンポーネントを変更
+ページコンポーネントを TypeScript に対応します。
+```src/pages/index.jsx
+// React と NextPage を読み込む
+import React from 'react'
+import { NextPage } from 'next'
+
+// 型を追加
+const Home: NextPage = () => {
+  // 関数の内容はそのまま
+}
+
+// export を分離
+export default Home
 ```
 
 # PWA のモジュールをインストール

@@ -1,7 +1,11 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+// React と NextPage を読み込む
+import React from 'react'
+import { NextPage } from 'next'
+
+const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -63,3 +67,6 @@ export default function Home() {
     </div>
   )
 }
+
+// export を分離
+export default Home
