@@ -36,7 +36,8 @@ docker exec -it node yarn add -D typescript @types/react @types/react-dom @types
 docker exec -it node yarn dev
 
 # src ディレクトリ配下の js と jsx のファイルを ts と tsx に変換
-find src -name "*.js" | sed 'p;s/.js$/.tsx/' | xargs -n2 mv
+find src/pages -name "_app.js" -or -name "index.js" | sed 'p;s/.js$/.tsx/' | xargs -n2 mv & find src/pages/api -name "*.js" | sed 'p;s/.js$/.ts/' | xargs -n2 mv
+
 
 # PWA のモジュールをインストール
 docker exec -it node yarn add --dev next-offline
