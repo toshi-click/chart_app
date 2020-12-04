@@ -224,3 +224,17 @@ CSS ファイルを SASS ファイルに変換しましたので、正しく読�
 ```
 sed -i '' -e 's/\.css/\.scss/' src/pages/_app.tsx && sed -i '' -e 's/\.css/\.scss/' src/pages/index.tsx
 ```
+
+## デフォルト CSS の追加
+### インストール
+sanitize.css をインストールします
+```
+docker exec -it node yarn add -D sanitize.css
+```
+### App コンポーネントを変更
+デフォルト CSS を全体に適応する為に、App コンポーネントで sanitize.css を読み込みます。
+```src/pages/_app.tsx
+// sanitize.css を読み込む
+import 'sanitize.css'
+```
+
