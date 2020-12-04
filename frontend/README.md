@@ -207,4 +207,20 @@ docker exec -it node yarn add recoil
 ```
 使い方は[ドキュメント](https://recoiljs.org/docs/basic-tutorial/intro/) を確認してください。
 
+## スタイルの設定
+### SASS のインストール
+```
+docker exec -it node yarn add -D sass
+```
 
+### SASS ファイルに変換
+src/styles ディレクトリ内の CSS ファイルを SASS ファイルに変換します
+```
+find src/styles -name "*.css" | sed 'p;s/.css$/.scss/' | xargs -n2 mv
+```
+
+### SASS ファイルを読み込むように変更
+CSS ファイルを SASS ファイルに変換しましたので、正しく読み込めるようにコンポーネントを変更します。
+```
+sed -i '' -e 's/\.css/\.scss/' src/pages/_app.tsx && sed -i '' -e 's/\.css/\.scss/' src/pages/index.tsx
+```
