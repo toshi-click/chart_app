@@ -200,4 +200,11 @@ Document コンポーネントにマニュフェストへのリンクを追記�
 **/public/worker-*.js.map
 ```
 
+## 状態管理ライブラリを追加
+### Recoil のインストール
+```
+docker exec -it node yarn add recoil
+```
+使い方は[ドキュメント](https://recoiljs.org/docs/basic-tutorial/intro/) を確認してください。
+
 
