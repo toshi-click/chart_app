@@ -1,4 +1,4 @@
-import '../styles/globals.css'
+import 'styles/globals.css'
 // React と AppProps を読み込む
 import React from 'react'
 import { AppProps } from 'next/app'

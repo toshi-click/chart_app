@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    // ベース URL を追加
+    "baseUrl": "src"
+  }
+}

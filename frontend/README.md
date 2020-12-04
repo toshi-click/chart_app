@@ -139,19 +139,25 @@ class MyDocument extends Document implements MyDocumentInterface {
 export default MyDocument
 ```
 
-# PWA のモジュールをインストール
-docker exec -it node yarn add --dev next-offline
+## ベース URL を設定
+### TypeScript の設定を変更
+TypeScript の設定にモジュールインポートのベース URL を追記します。
+```tsconfig.json
+{
+  "compilerOptions": {
+    // ベース URL を追加
+    "baseUrl": "src"
+  }
+}
+```
 
-  yarn dev
-    Starts the development server.
+### 各コンポーネントを変更
+各コンポーネントのモジュールインポートの指定を、ベース URL 指定に変更します。
+```
+sed -i '' -e 's/..\/styles/styles/' src/pages/_app.tsx & sed -i '' -e 's/..\/styles/styles/' src/pages/index.tsx
+```
 
-  yarn build
-    Builds the app for production.
 
-  yarn start
-    Runs the built app in production mode.
 
-We suggest that you begin by typing:
 
-  cd chart-app
-  yarn dev
+
