@@ -422,3 +422,25 @@ it('Home ページコンポーネントが存在している', () => {
 ```
 docker exec -it node yarn test
 ```
+
+### React Testing Library を追加
+React Testing Library をインストールします。
+```
+docker exec -it node yarn add -D @testing-library/react
+```
+適当なテストを追記してみます。
+```src/__tests__/Smaple.test.tsx
+// React と React Testing Library を読み込みます
+import React from 'react'
+import { cleanup, render, screen } from '@testing-library/react'
+
+// 各テスト実行後にレンダーしたコンポーネントをアンマウントする
+afterEach(cleanup)
+
+it('「Next.js!」のリンクが Next.js の公式サイトのトップページである', () => {
+  render(<Home />)
+  expect(screen.getByText('Next.js!').getAttribute('href')).toBe(
+    'https://nextjs.org'
+  )
+})
+```
