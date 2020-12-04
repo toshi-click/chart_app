@@ -68,6 +68,21 @@ const Home: NextPage = () => {
 export default Home
 ```
 
+### API を変更
+API を TypeScript に対応します。
+```src/pages/api/hello.ts
+// レスポンスの型を追加
+type Response = {
+  statusCode: number
+  json({ name: string }): void
+}
+
+// 型を指定＆使用していない引数にアンダースコア接頭詞を追加
+export default (_req: void, res: Response): void => {
+  // 関数の内容はそのまま
+}
+```
+
 # PWA のモジュールをインストール
 docker exec -it node yarn add --dev next-offline
 
