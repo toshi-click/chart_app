@@ -157,7 +157,47 @@ TypeScript の設定にモジュールインポートのベース URL を追記�
 sed -i '' -e 's/..\/styles/styles/' src/pages/_app.tsx & sed -i '' -e 's/..\/styles/styles/' src/pages/index.tsx
 ```
 
+## PWA に対応
+### インストール
+PWA のモジュールをインストールします。
+```
+docker exec -it node yarn add next-pwa
+```
 
+### 設定ファイルの追加
+touch next.config.js
+```next.config.js
+const withPWA = require('next-pwa')
 
+module.exports = withPWA({
+  pwa: {
+    dest: 'public'
+  }
+})
+```
+
+### ウェブアプリマニフェストを追加
+1. [Web App Manifest Generator ](https://app-manifest.firebaseapp.com/) でウェブアプリマニフェスト関連のファイルを作成します
+1. 作成した manifest.json と images フォルダを public 直下に設置します
+
+### Document コンポーネントを変更
+Document コンポーネントにマニュフェストへのリンクを追記します。
+```src/pages/_document.tsx
+<Head>
+  <link rel="manifest" href="/manifest.json" />
+</Head>
+```
+
+### 無視ファイルを追加
+```.gitignore
+**/public/precache.*.*.js
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/precache.*.*.js.map
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
+```
 
 
