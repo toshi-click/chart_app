@@ -1,5 +1,10 @@
 module.exports = {
-  ignorePatterns: ['!.eslintrc.js', '!.prettierrc.js'],
+  ignorePatterns: [
+    '!.eslintrc.js',
+    '!.prettierrc.js',
+    // Storybook の設定フォルダを追加する
+    '!.storybook',
+  ],
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',

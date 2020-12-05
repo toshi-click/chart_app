@@ -45,3 +45,6 @@ yarn-error.log*
 
 # ESLint のキャッシュファイルを追加
 .eslintcache
+
+# Storybook のビルドディレクトリを追加
+storybook-static

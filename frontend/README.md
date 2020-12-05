@@ -444,3 +444,99 @@ it('「Next.js!」のリンクが Next.js の公式サイトのトップペー�
   )
 })
 ```
+## コンポーネントカタログの追加
+コンポーネントを元にそれを組みわせてアプリケーションを作り上げていく形では、コンポーネントの一覧や状態を確認できるコンポーネントカタログはとても便利です。
+
+### Storybook のインストール
+```
+docker exec -it node npx sb init
+```
+セットアップが終わると以下が対応されています。
+- 関連ファイルのインスール
+- 設定ファイルの追加
+- サンプルファイルの追加
+- NPM スクリプトの追記
+
+### ESLint の設定を変更
+ESLint の設定ファイルに Storybook の設定ファイルを無視しないように追記します。
+```.eslintrc.js
+module.exports = {
+  ignorePatterns: [
+    // Storybook の設定フォルダを追加する
+    '!.storybook'
+  ],
+}
+```
+一度、自動整形を実行します。
+```
+docker exec -it node yarn lint --fix
+```
+いくつかのサンプルファイルでエラーがでているので修正します。
+```src/stories/Header.tsx
+export interface HeaderProps {
+  // `{}` の型を変更する
+  user?: Record<string, unknown>
+}
+```
+```src/stories/Page.tsx
+export interface PageProps {
+  // `{}` の型を変更する
+  user?: Record<string, unknown>
+}
+
+export const Page: React.FC<PageProps> = () => (
+  <li>
+    Use a higher-level connected component. Storybook helps you compose
+    {/* `"` を実体参照に変更する */}
+    such data from the &quot;args&quot; of child component stories
+  </li>
+)
+```
+
+### sass-loader をインストール
+SASS を使っていれば　sass-loader をインスールします。
+```
+docker exec -it node yarn add -D sass-loader
+```
+
+### Storybook の設定を変更
+設定ファイルにエイリアスと SASS の設定を追記します。
+```.storybook/main.js
+// ESLint のエラーを回避する
+/* eslint-disable
+    @typescript-eslint/no-var-requires
+*/
+
+const { resolve } = require('path')
+
+module.exports = {
+  webpackFinal: async (config) => {
+    // SASS ファイルを読み込みるように設定する
+    config.module.rules.push({
+      test: /\.scss$/,
+      use: ['style-loader', 'css-loader', 'sass-loader'],
+      include: resolve(__dirname, '../'),
+    })
+    // エイリアスを設定する
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      components: resolve(__dirname, '../src/components'),
+      styles: resolve(__dirname, '../src/styles'),
+    }
+    return config
+  },
+}
+```
+### 無視ファイルを追加
+```.gitignore
+# Storybook のビルドディレクトリを追加
+storybook-static
+```
+
+### デフォルト CSS を追加
+Storybook で表示されるコンポーネント自体に、デフォルト CSS を効かせる為に以下を追記します。
+```storybook/preview.js
+// デフォルト CSS を読み込む
+import 'sanitize.css'
+```
+
