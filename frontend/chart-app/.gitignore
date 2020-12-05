@@ -48,3 +48,6 @@ yarn-error.log*
 
 # Storybook のビルドディレクトリを追加
 storybook-static
+
+# Storyshots の差分ディレクトリを追加
+src/storyshots/__snapshots__/__diff_output__

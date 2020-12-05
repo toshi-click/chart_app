@@ -540,3 +540,122 @@ Storybook で表示されるコンポーネント自体に、デフォルト CSS
 import 'sanitize.css'
 ```
 
+## コンポーネントカタログのスナップショットの追加
+
+### StoryShots の追加
+スナップショットのテストをすることで、機能追加などの際に意図しない変更が起きていないかを確認することができます。
+共通コンポーネントの変更は影響範囲が大きいですので、明確に差分を確認させることでリスクを減らすことができるかと思います。
+
+#### インストール
+```
+docker exec -it node yarn add -D @storybook/addon-storyshots
+```
+#### 設定の追加
+Storybook の設定ファイルを作成します。
+```
+mkdir storyshots && touch storyshots/storybook.test.ts
+```
+
+```src/storybook.test.ts
+import initStoryshots from '@storybook/addon-storyshots'
+
+initStoryshots()
+```
+#### TS ファイルに変換
+JS ファイルのままだと tsconfig.json の設定を使えずに、ファイルの読み込みエラーなどがおきるので preview.js を TS ファイルに変換します。
+```
+mv .storybook/preview.js .storybook/preview.ts
+```
+#### ファイルの読み込みに対応
+サンプルのストーリーファイルで DMX と SVG のファイルを読み込んでいる為、スナップショット時にエラーがでてしまいます。
+
+SVG の変換をするモジュールを追加します。
+```
+docker exec -it node yarn add -D jest-svg-transformer
+```
+テストの設定ファイルに MDX の変換処理 と SVG の変換処理を追加します。
+```jest.config.js
+module.exports = {
+  // DMX と SVG の変換処理を追加
+  transform: {
+    '^.+\\.svg$': 'jest-svg-transformer',
+    '^.+\\.jsx?$': 'ts-jest',
+    '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx',
+  },
+}
+```
+#### NPM スクリプトの追加
+スナップショットテストを実行する NPM スクリプトを追記します。
+```package.json
+{
+  "scripts": {
+    "storyshots": "jest src/storybook.test.ts",
+  }
+}
+```
+### Puppeteer storyshots の追加
+Puppeteer を使いスクレイピングすることで、ストーリーごとの画像キャプチャを撮り見た目の差分を検知することができます。
+#### インストール
+```
+docker exec -it node yarn add -D @storybook/addon-storyshots-puppeteer puppeteer
+```
+#### 設定の追加
+Storybook の設定ファイルを作成します。
+```
+# 基本（PC用）の設定ファイルを作成
+touch storyshots/puppeteer-storyshots.test.ts
+
+# タブレット用の設定ファイルを作成
+touch storyshots/puppeteer-storyshots-ipad.test.ts
+
+# スマホ用の設定ファイルを作成
+touch storyshots/puppeteer-storyshots-iphone8.test.ts
+```
+基本（PC用）の設定ファイルに以下を記述します。
+```storyshots/puppeteer-storyshots.test.ts
+import initStoryshots from '@storybook/addon-storyshots'
+import { imageSnapshot } from '@storybook/addon-storyshots-puppeteer'
+
+initStoryshots({
+  test: imageSnapshot(),
+})
+```
+タブレット用の設定ファイルに以下を記述します。
+```storyshots/puppeteer-storyshots-ipad.test.ts
+import initStoryshots from '@storybook/addon-storyshots'
+import { imageSnapshot } from '@storybook/addon-storyshots-puppeteer'
+import { devices } from 'puppeteer'
+
+const customizePage = (page) => page.emulate(devices['iPad'])
+
+initStoryshots({
+  suite: 'Image storyshots: iPad',
+  test: imageSnapshot({ customizePage }),
+})
+```
+スマホ用の設定ファイルに以下を記述します。
+```storyshots/puppeteer-storyshots-iphone8.test.ts
+import initStoryshots from '@storybook/addon-storyshots'
+import { imageSnapshot } from '@storybook/addon-storyshots-puppeteer'
+import { devices } from 'puppeteer'
+
+const customizePage = (page) => page.emulate(devices['iPhone 8'])
+
+initStoryshots({
+  suite: 'Image storyshots: iPhone 8',
+  test: imageSnapshot({ customizePage }),
+})
+```
+#### 無視ファイルを追加
+```.gitignore
+# Storyshots の差分ディレクトリを追加
+src/storyshots/__snapshots__/__diff_output__
+```
+#### NPM スクリプトの追加
+```package.json
+{
+  "scripts": {
+    "puppeteer-storyshots": "jest storyshots/puppeteer-storyshots*.test.ts",
+  }
+}
+```
