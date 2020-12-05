@@ -659,3 +659,67 @@ src/storyshots/__snapshots__/__diff_output__
   }
 }
 ```
+
+## フックスクリプトの追加
+TODO WSL-Docker環境で動かすために若干修正が必要なのでここは未実施
+
+リポジトリへのコミットやプッシュの際に、事前に Lint やテストを自動実行できるようにします。
+これによりプロジェクトを健全に保つことができます。
+### lint-staged の追加
+lint-staged は Git のステージに上っているファイルだけを Lint の対象にすることができるツールです。
+
+#### lint-staged をインストール
+```
+npx mrm lint-staged
+```
+#### NPM スクリプトに追加
+```package.json
+{
+  "scripts": {
+    "lint-staged": "lint-staged"
+  }
+}
+```
+### husky の追加
+#### husky のインストール
+```
+yarn add -D  husky@next
+```
+#### Git hooks の有効化
+以下のコマンドで Git hooks を有効化します。
+```
+yarn husky install
+```
+#### フックスクリプトを追加
+Git コマンド実行時に以下の処理を実行するようにします。
+
+- コミット前にステージにあるファイルを対象に ESLint の実行
+- プッシュ前にすべてのテストの実行
+```
+yarn husky add pre-commit "yarn lint-staged" & \
+  yarn husky add pre-push "yarn test && yarn storyshots && yarn puppeteer-storyshots"
+```
+## 環境変数の追加
+開発環境や本番環境ごとなどに、違った変数を用意することができます。それを環境変数といいます。Next.js では環境変数をデフォルトで設定できるようになっています。
+
+### 環境変数ファイルを追加
+開発環境と本番環境の環境変数ファイルを作成する。
+```
+touch .env.development & touch .env.production
+```
+作成した開発環境の環境変数ファイルに、開発サーバの URL を環境変数として用意する。
+```.env.development
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+作成した本番環境の環境変数ファイルに、本番サーバの URL を環境変数として用意する。
+```.env.production
+NEXT_PUBLIC_SITE_URL=https://example.com
+```
+### 環境変数を使用する
+Document コンポーネントのサイト URL に環境変数を設定します。
+```src/pages/_document.tsx
+class MyDocument extends Document implements MyDocumentInterface {
+  // 環境変数を追加
+  url = process.env.NEXT_PUBLIC_SITE_URL
+}
+```
