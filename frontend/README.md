@@ -665,40 +665,30 @@ TODO WSL-Docker環境で動かすために若干修正が必要なのでここ�
 
 リポジトリへのコミットやプッシュの際に、事前に Lint やテストを自動実行できるようにします。
 これによりプロジェクトを健全に保つことができます。
-### lint-staged の追加
-lint-staged は Git のステージに上っているファイルだけを Lint の対象にすることができるツールです。
 
-#### lint-staged をインストール
-```
-npx mrm lint-staged
-```
-#### NPM スクリプトに追加
-```package.json
-{
-  "scripts": {
-    "lint-staged": "lint-staged"
-  }
-}
-```
-### husky の追加
-#### husky のインストール
-```
-yarn add -D  husky@next
-```
 #### Git hooks の有効化
-以下のコマンドで Git hooks を有効化します。
+git hooksのファイルを作成して有効化する
+- ESLint の実行
+- プッシュ前にテストの実行
 ```
-yarn husky install
-```
-#### フックスクリプトを追加
-Git コマンド実行時に以下の処理を実行するようにします。
+#!/usr/bin/env bash
+git secrets --pre_commit_hook -- "$@"
 
-- コミット前にステージにあるファイルを対象に ESLint の実行
-- プッシュ前にすべてのテストの実行
+if [ "$OS" = "Windows_NT" ]; then
+    wsl.exe docker start node
+    wsl.exe docker exec -t node yarn lint --fix
+    wsl.exe docker exec -t node yarn test
+    #wsl.exe docker exec -t node yarn storyshots
+    #wsl.exe docker exec -t node yarn puppeteer-storyshots
+else
+    docker start node
+    docker exec -t node yarn lint --fix
+    docker exec -t node yarn test
+    #docker exec -t node yarn storyshots
+    #docker exec -t node yarn puppeteer-storyshots
+fi
 ```
-yarn husky add pre-commit "yarn lint-staged" & \
-  yarn husky add pre-push "yarn test && yarn storyshots && yarn puppeteer-storyshots"
-```
+
 ## 環境変数の追加
 開発環境や本番環境ごとなどに、違った変数を用意することができます。それを環境変数といいます。Next.js では環境変数をデフォルトで設定できるようになっています。
 
