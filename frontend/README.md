@@ -88,7 +88,7 @@ export default (_req: void, res: Response): void => {
 
 ### Document コンポーネントを作成
 ```
-touch src/pages/_document.jsx
+touch src/pages/_document.tsx
 ```
 
 ### 作成した Document コンポーネントに以下を記述します。
