@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from 'styles/Home.module.scss'
+import Link from 'next/link'
 
 // React と NextPage を読み込む
 import React from 'react'
@@ -15,7 +16,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Read <Link href="/first-post"><a>this page!</a></Link>
         </h1>
 
         <p className={styles.description}>
