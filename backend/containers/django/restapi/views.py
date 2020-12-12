@@ -5,6 +5,7 @@ from .serializers import SnippetSerializer, UserSerializer, StockSerializer
 from .permissions import IsOwnerOrReadOnly
 
 from chart.models import RawPrices
+from chart.models import Company
 
 class StockList(generics.ListCreateAPIView):
     permission_classes = [permissions.AllowAny]

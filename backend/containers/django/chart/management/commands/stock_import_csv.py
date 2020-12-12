@@ -1,6 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
+import logging
+
 from chart.models import RawPrices
 
 import os
@@ -10,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         csv_dir = settings.MEDIA_ROOT + '/stock'
         csv_files = os.listdir(csv_dir)
-        #print(csv_file)
+        logger = logging.getLogger('django')
 
         # csvファイルの数だけfor分を回す.
         for i in range(len(csv_files)):
@@ -19,6 +21,7 @@ class Command(BaseCommand):
             # 1行目はカラムがあるので除去する
             #df = csv_file.drop(1, axis=0)
             for index, item in csv_file.iterrows():
+                logger.info("code:" + str(item['Code']) + "   date: " + str(item['Date']))
                 if RawPrices.check_duplicate(code=item['Code'], date=item['Date']):
                     raw_price = RawPrices.objects.filter(code=item['Code'], date=item['Date']).first()
                 else:
@@ -31,5 +34,7 @@ class Command(BaseCommand):
                 raw_price.high_price = item['High']
                 raw_price.low_price = item['Low']
                 raw_price.volume = item['Volume']
+
+                # ここで移動平均値を計算する
 
                 raw_price.save()

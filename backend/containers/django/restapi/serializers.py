@@ -3,6 +3,7 @@ from .models import Snippet
 from django.contrib.auth.models import User
 
 from chart.models import RawPrices
+from chart.models import Company
 
 class StockSerializer(serializers.ModelSerializer):
     class Meta:

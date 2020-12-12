@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block contents %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mt-5 border-bottom">
+    <h1 class="h2">ローソク足チャート</h1>
+</div>
+
+<div>
+    <h4>銘柄コードを指定</h4>
+</div>
+
+    {% for c in chart %}
+        <div class="post">
+            <div class="date">
+                {{ c.date }}
+            </div>
+            <h2>{{ c.close_price }}</h2>
+        </div>
+    {% endfor %}
+{% endblock %}
