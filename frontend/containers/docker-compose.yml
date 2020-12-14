@@ -27,7 +27,7 @@ services:
       context: ./node
       dockerfile: Dockerfile
     volumes:
-      - ../blog-app:/usr/src/app
+      - ../todo-app:/usr/src/app
     command: bash -c "yarn dev"
     environment:
       CHOKIDAR_USEPOLLING: "true"
