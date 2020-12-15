@@ -5,9 +5,15 @@ import 'sanitize.css'
 import React from 'react'
 import { AppProps } from 'next/app'
 
+import { RecoilRoot } from 'recoil'
+
 // 引数に型を追加する
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-  return <Component {...pageProps} />
+  return (
+    <RecoilRoot>
+      <Component {...pageProps} />
+    </RecoilRoot>
+  )
 }
 
 export default MyApp
