@@ -20,17 +20,3 @@ services:
     ports:
       - "3000:3000"
     logging: *default-logging
-
-  node2:
-    container_name: node2
-    build:
-      context: ./node
-      dockerfile: Dockerfile
-    volumes:
-      - ../todo-app:/usr/src/app
-    command: bash -c "yarn dev"
-    environment:
-      CHOKIDAR_USEPOLLING: "true"
-    ports:
-      - "3001:3000"
-    logging: *default-logging
