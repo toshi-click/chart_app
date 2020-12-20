@@ -1,6 +1,10 @@
+import React, { Component } from 'react'
+import AmChartCandle from './AmChartCandle'
+
 import Link from 'next/link'
 
 export default function Chart() {
+
   return (
     <>
       <h1>First Post</h1>
