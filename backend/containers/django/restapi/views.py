@@ -7,10 +7,10 @@ from .permissions import IsOwnerOrReadOnly
 from chart.models import RawPrices
 from chart.models import Company
 
-class StockList(generics.ListCreateAPIView):
+class StockList(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
     # 一旦1306固定で最新30件取得する
-    stock = RawPrices.objects.filter(code=1306).order_by('date').reverse().all()[:30]
+    queryset = RawPrices.objects.filter(code=1306).order_by('date').reverse().all()[:30]
     serializer_class = StockSerializer
 
 class SnippetList(generics.ListCreateAPIView):
