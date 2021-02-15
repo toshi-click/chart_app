@@ -7,13 +7,13 @@ x-logging:
   driver: json-file
 
 services:
-  node:
-    container_name: node
+  next:
+    container_name: next
     build:
-      context: ./node
+      context: ../infra/containers/node
       dockerfile: Dockerfile
     volumes:
-      - ../chart-app:/usr/src/app
+      - ./chart-app:/usr/src/app
     command: bash -c "yarn dev"
     environment:
       CHOKIDAR_USEPOLLING: "true"

@@ -12,7 +12,7 @@ services:
   web:
     #    restart: always
     build:
-      context: ./django
+      context: .
       dockerfile: Dockerfile
     container_name: web
 #    environment:
@@ -24,7 +24,7 @@ services:
     # docker exec -it django_web kill -HUP [↑で確認した番号]
     command: bash -c "sleep 5; gunicorn config.wsgi --workers 2 --bind 0.0.0.0:8000 --max-requests 1"
     volumes:
-      - ./django:/usr/src/app
+      - .:/usr/src/app
     depends_on:
       - "db"
     env_file: .env
@@ -35,7 +35,7 @@ services:
   db:
 #    restart: always
     build:
-      context: ./postgresql
+      context: ../infra/containers/postgresql
       dockerfile: Dockerfile
       args:
         - DB_LANG=ja_JP
@@ -45,8 +45,8 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       # down -vなどでボリュームがない時などを含めた初回起動時に実行されるファイルを指定
-      - ./postgresql/sql:/docker-entrypoint-initdb.d
-      - ./postgresql/postgresql.conf:/etc/postgresql.conf
+      - ../infra/containers/postgresql/sql:/docker-entrypoint-initdb.d
+      - ../infra/containers/postgresql/postgresql.conf:/etc/postgresql.conf
     ports:
       - "5432:5432"
     logging: *default-logging
@@ -63,10 +63,10 @@ services:
 #    restart: always
     container_name: nginx
     build:
-      context: ./nginx
+      context: ../infra/containers/nginx
       dockerfile: Dockerfile
     volumes:
-      - ./django/static:/static
+      - ./static:/static
     ports:
       - "8000:80"
     depends_on:
