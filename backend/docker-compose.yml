@@ -40,7 +40,7 @@ services:
       args:
         - DB_LANG=ja_JP
     container_name: db
-    env_file: .env
+    env_file: ./.env
     command: 'postgres -c config_file="/etc/postgresql.conf"'
     volumes:
       - db_data:/var/lib/postgresql/data
