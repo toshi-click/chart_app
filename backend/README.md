@@ -69,4 +69,6 @@ docker exec -it db bash -c 'pg_dump -d django_db -U postgres > /docker-entrypoin
 
 docker rm -f db
 docker volume rm containers_db_data
+
+docker exec -it -u postgres db bash -c 'cat /docker-entrypoint-initdb.d/dump.sql | psql django_db'
 ```
