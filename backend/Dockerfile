@@ -42,9 +42,10 @@ COPY Pipfile ./
 RUN pipenv install --system --skip-lock
 
 # シェルスクリプトをコピー
-COPY entrypoint.sh /usr/src/app/entrypoint.sh
+COPY entrypoint.sh /entrypoint/entrypoint.sh
+RUN chmod 755 /entrypoint/entrypoint.sh
 
 COPY . /usr/src/app/
 
 # シェルスクリプトを実行
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint/entrypoint.sh"]
