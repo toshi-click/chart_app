@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    // ベース URL を追加
-    "baseUrl": "src",
     "target": "es5",
     "lib": [
       "dom",
