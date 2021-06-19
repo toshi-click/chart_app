@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', "&8-k7f8weyqde!pmk%5mq*%-jpvwsk14najxp&udx&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'raspi.test', '172.16.0.0/12']
 
 # Application definition
 INSTALLED_APPS = [
